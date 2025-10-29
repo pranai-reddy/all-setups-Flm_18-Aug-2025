@@ -13,3 +13,9 @@ aws s3api put-bucket-versioning --bucket pranaiflmtwo.kops --versioning-configur
 export KOPS_STATE_STORE=s3://pranaiflmtwo.kops
 kops create cluster --name flmtwo.k8s.local --zones ap-south-1a,ap-south-1b --master-count=1 --master-size c7i-flex.large --master-volume-size=30 --node-count=2 --node-size t3.micro --node-volume-size=20 --image=ami-02d26659fd82cf299
 kops update cluster --name flmtwo.k8s.local --yes --admin
+
+# Once the KOPS cluster is created, we will have the Master and Worker Servers(Ec2), LB, ASG, VPC, etc., will be creted.
+
+# To delete the KOPS cluster,
+export KOPS_STATE_STORE=s3://pranaiflmtwo.kops
+kops delete cluster --name flmtwo.k8s.local --yes
