@@ -13,5 +13,5 @@ mv kubectl /usr/local/bin/kubectl
 aws s3api create-bucket --bucket pranaiflmtwo.kops --region ap-south-1
 aws s3api put-bucket-versioning --bucket pranaiflmtwo.kops --region ap-south-1 --versioning-configuration Status=Enabled
 export KOPS_STATE_STORE=s3://pranaiflmtwo.kops
-kops create cluster --name flm.k8s.local --zones ap-south-1a,ap-south-1b --master-count=1 --master-size c7i-flex.large --master-volume-size=30 --node-count=2 --node-size t3.micro --node-volume-size=20 --image=ami-02d26659fd82cf299
-kops update cluster --name flm.k8s.local --yes --admin
+kops create cluster --name flmtwo.k8s.local --zones ap-south-1a,ap-south-1b --master-count=1 --master-size c7i-flex.large --master-volume-size=30 --node-count=2 --node-size t3.micro --node-volume-size=20 --image=ami-02d26659fd82cf299
+kops update cluster --name flmtwo.k8s.local --yes --admin
