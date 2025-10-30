@@ -19,3 +19,7 @@ kops update cluster --name flmtwo.k8s.local --yes --admin
 # To delete the KOPS cluster,
 export KOPS_STATE_STORE=s3://pranaiflmtwo.kops
 kops delete cluster --name flmtwo.k8s.local --yes
+
+
+# Install Metrics Server, take it from official Doc Install cmd:- https://github.com/kubernetes-sigs/metrics-server
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
