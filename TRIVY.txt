@@ -1,8 +1,27 @@
-TRIVY INSTALLATION:
+#TRIVY INSTALLATION:
+#Use only the first 7 points
 
-wget https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.tar.gz
-tar zxvf trivy_0.18.3_Linux-64bit.tar.gz
+# 1. Remove the bad file
+rm -f trivy_0.67.2_Linux-amd64.tar.gz
+
+# 2. Use the correct URL with -L and -f flags to ensure proper redirect and HTTPS follow
+curl -fsSL -o trivy_0.67.2_Linux-amd64.tar.gz https://github.com/aquasecurity/trivy/releases/download/v0.67.2/trivy_0.67.2_Linux-64bit.tar.gz
+
+# 3. Verify that the file size is NOT tiny (should be > 100 MB)
+ls -lh trivy_0.67.2_Linux-amd64.tar.gz
+
+# 4. Extract it
+tar zxvf trivy_0.67.2_Linux-amd64.tar.gz
+
+# 5. Move the binary to /usr/local/bin
 sudo mv trivy /usr/local/bin/
-vim .bashrc
-export PATH=$PATH:/usr/local/bin/
-source .bashrc 
+
+# 6. Make it executable
+sudo chmod +x /usr/local/bin/trivy
+
+# 7. Verify
+trivy --version
+
+#vim .bashrc
+#export PATH=$PATH:/usr/local/bin/
+#source .bashrc 
