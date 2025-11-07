@@ -22,3 +22,18 @@ tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
 sudo install -m 0755 /tmp/eksctl /usr/local/bin && rm /tmp/eksctl
 
 # 4. Install EKS Cluster
+
+# Create EKS Cluster, once this is executed then we can see it in EKS section.
+eksctl create cluster --name=EKS-1 --region=ap-south-1 --zones=ap-south-1a,ap-south-1b --without-nodegroup
+
+# Now attach the IAM role to the EKS Cluster.
+eksctl utils associate-iam-oidc-provider --region ap-south-1 --cluster EKS-1 --approve
+
+# Create the Node Group, for worker nodes will be created in ec2. But what about master, master will be mainatined by EKS only.
+eksctl create nodegroup --cluster=EKS-1 --region=ap-south-1 --name=node2 --node-type=c7i-flex.large --nodes=3 --nodes-min=2 --nodes-max=4 --node-volume-size=20 --ssh-access --ssh-public-key=jyothikp --managed --asg-access --external-dns-access --full-ecr-access --appmesh-access --alb-ingress-access
+
+# Update the EKS Cluster
+aws eks update-kubeconfig --name EKS-1 --region=ap-south-1
+
+
+
