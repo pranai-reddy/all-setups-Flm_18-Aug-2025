@@ -1,0 +1,51 @@
+Prometheus is a monitoring tool which gives the data in raw format.
+Grafana is a visualtion tool which takes the raw data from Prometheus and allows to create custom dashboard.
+
+For demo use KOPS Cluster with m7i flex large as master and c7i flex large as nodes with a 5 node cluster.
+
+Create 2 ns pm gf
+# kubectl create ns prometheus
+# kubectl create ns grafana
+
+Install metrics server
+
+# kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+# kubectl get pods -n kube-system - check if metrics server is up and running
+
+Install helm now,
+# curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+# chmod 700 get_helm.sh
+# ./get_helm.sh
+# helm version
+
+Download the repo's from Helm repo
+# helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+# helm repo list - To see if helm repo is downloaded or not
+# helm repo add grafana https://grafana.github.io/helm-charts
+# helm repo list - To see if helm repo is downloaded or not
+
+To update
+# helm repo update
+
+Install pm in pm ns
+# helm install prometheus prometheus-community/prometheus --namespace prometheus --set alertmanager.persistentVolume.storageClass="gp2" --set server.persistentVolume.storageClass="gp2"
+# kubectl get pods -n prometheus
+
+
+Install Gf in gf ns
+# helm install grafana grafana/grafana --namespace grafana --set persistence.storageClassName="gp2" --set persistence.enabled=true --set adminPassword='EKS!sAWSome' --set service.type=LoadBalancer
+# kubectl get pods -n grafana
+
+
+Usrname will be admin and run the below cmd to get the pwd
+# kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+EKS!sAWSome - Pwd
+UI will be at take external IP,
+# kubectl get svc -n grafana
+
+Home - add your first dta source - Pm - Give default pm link (http://prometheus-server.prometheus.svc.cluster.local/) - Save and test
+
+Dashboards - New - Import - 6417 - Load - select pm datasource which is added in above step - Import (This is for K8s cluster,Pods, etc.,)
+Dashboards - New - Import - 1860 - Load  - Import - (This will be for system/nodes also called as Node Exporter)
+Dashboards - New - Import - 315 - Load - select pm datasource which is added in above step - Import (This is for Overall Cluster etc.,)
+
