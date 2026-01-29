@@ -1,0 +1,18 @@
+New Relic
+
+Login to Newrelic website with Google acct
+
+UI - Integrations and Agents - Kubernetes - Helm - Create a new key (4e3926e7d4b5b89959c9a85f59e68228FFFFNRAL) - continue
+Cluster name - pranaiflm9001.k8s.local (This can be seen in #kops get cluster), Namespace -newrelic (create this manually in kubectl as well) - Continue
+
+continue,continue, continue
+
+The below cmd will be in Install the k8s Integrations and execute it in kubectl
+
+KSM_IMAGE_VERSION="v2.13.0" && helm repo add newrelic https://helm-charts.newrelic.com && helm repo update && kubectl create namespace newrelic ; helm upgrade --install newrelic-bundle newrelic/nri-bundle --set global.licenseKey=4e3926e7d4b5b89959c9a85f59e68228FFFFNRAL --set global.cluster=pranaiflm9001.k8s.local --namespace=newrelic --set global.lowDataMode=true --set kube-state-metrics.image.tag=${KSM_IMAGE_VERSION} --set kube-state-metrics.enabled=true --set kubeEvents.enabled=true --set newrelic-prometheus-agent.enabled=true --set newrelic-prometheus-agent.lowDataMode=true --set newrelic-prometheus-agent.config.kubernetes.integrations_filter.enabled=false --set nr-ebpf-agent.enabled=true --set k8s-agents-operator.enabled=true --set logging.enabled=true --set newrelic-logging.lowDataMode=true
+continue
+
+Copy the yaml file from Configure APM auto-instrumentation and execute in kubectl
+
+continue
+Test connection, see your data (This will get our complte infra)
